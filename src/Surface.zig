@@ -1676,8 +1676,8 @@ pub fn selectionInfo(self: *const Surface) ?apprt.Selection {
     const ordered_end_coord = ordered_end_pt.coord();
 
     // Utilize viewport sizing to convert to offsets using the ordered selection
-    const start = ordered_start_coord.y * self.io.terminal.screen.pages.cols + ordered_start_coord.x;
-    const end = ordered_end_coord.y * self.io.terminal.screen.pages.cols + ordered_end_coord.x;
+    const start = self.coordToOffset(ordered_start_coord);
+    const end = self.coordToOffset(ordered_end_coord);
 
     // Our sizes are all scaled so we need to send the unscaled values back.
     const content_scale = self.rt_surface.getContentScale() catch .{ .x = 1, .y = 1 };

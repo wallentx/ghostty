@@ -1592,12 +1592,7 @@ pub fn dumpTextLocked(
             .viewport,
             sel.topLeft(&self.io.terminal.screen),
         ) orelse break :viewport null;
-        const br_pt = self.io.terminal.screen.pages.pointFromPin(
-            .viewport,
-            sel.bottomRight(&self.io.terminal.screen),
-        ) orelse break :viewport null;
         const tl_coord = tl_pt.coord();
-        const br_coord = br_pt.coord();
 
         // Our sizes are all scaled so we need to send the unscaled values back.
         const content_scale = self.rt_surface.getContentScale() catch .{ .x = 1, .y = 1 };
@@ -1630,9 +1625,23 @@ pub fn dumpTextLocked(
             break :y y;
         };
 
-        // Utilize viewport sizing to convert to offsets
-        const start = tl_coord.y * self.io.terminal.screen.pages.cols + tl_coord.x;
-        const end = br_coord.y * self.io.terminal.screen.pages.cols + br_coord.x;
+        // Get the forward-ordered selection to ensure offset_start always represents
+        // the first character in the selection, regardless of selection direction.
+        const ordered_sel = sel.ordered(&self.io.terminal.screen, .forward);
+        const ordered_start_pt = self.io.terminal.screen.pages.pointFromPin(
+            .viewport,
+            ordered_sel.start(),
+        ) orelse break :viewport null;
+        const ordered_end_pt = self.io.terminal.screen.pages.pointFromPin(
+            .viewport,
+            ordered_sel.end(),
+        ) orelse break :viewport null;
+        const ordered_start_coord = ordered_start_pt.coord();
+        const ordered_end_coord = ordered_end_pt.coord();
+
+        // Utilize viewport sizing to convert to offsets using the ordered selection
+        const start = ordered_start_coord.y * self.io.terminal.screen.pages.cols + ordered_start_coord.x;
+        const end = ordered_end_coord.y * self.io.terminal.screen.pages.cols + ordered_end_coord.x;
 
         break :viewport .{
             .tl_px_x = x,
@@ -1682,15 +1691,26 @@ pub fn selectionInfo(self: *const Surface) ?apprt.Selection {
 
     // Get the TL/BR pins for the selection and convert to viewport.
     const tl = sel.topLeft(&self.io.terminal.screen);
-    const br = sel.bottomRight(&self.io.terminal.screen);
     const tl_pt = self.io.terminal.screen.pages.pointFromPin(.viewport, tl) orelse return null;
-    const br_pt = self.io.terminal.screen.pages.pointFromPin(.viewport, br) orelse return null;
     const tl_coord = tl_pt.coord();
-    const br_coord = br_pt.coord();
 
-    // Utilize viewport sizing to convert to offsets
-    const start = tl_coord.y * self.io.terminal.screen.pages.cols + tl_coord.x;
-    const end = br_coord.y * self.io.terminal.screen.pages.cols + br_coord.x;
+    // Get the forward-ordered selection to ensure offset_start always represents
+    // the first character in the selection, regardless of selection direction.
+    const ordered_sel = sel.ordered(&self.io.terminal.screen, .forward);
+    const ordered_start_pt = self.io.terminal.screen.pages.pointFromPin(
+        .viewport,
+        ordered_sel.start(),
+    ) orelse return null;
+    const ordered_end_pt = self.io.terminal.screen.pages.pointFromPin(
+        .viewport,
+        ordered_sel.end(),
+    ) orelse return null;
+    const ordered_start_coord = ordered_start_pt.coord();
+    const ordered_end_coord = ordered_end_pt.coord();
+
+    // Utilize viewport sizing to convert to offsets using the ordered selection
+    const start = ordered_start_coord.y * self.io.terminal.screen.pages.cols + ordered_start_coord.x;
+    const end = ordered_end_coord.y * self.io.terminal.screen.pages.cols + ordered_end_coord.x;
 
     // Our sizes are all scaled so we need to send the unscaled values back.
     const content_scale = self.rt_surface.getContentScale() catch .{ .x = 1, .y = 1 };

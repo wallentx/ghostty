@@ -17,8 +17,9 @@ struct GetTerminalDetailsIntent: AppIntent {
     )
     var terminal: TerminalEntity
 
-    @available(macOS 26.0, *)
-    static var supportedModes: IntentModes = .background
+    // Temporarily commented out to allow build completion for testing
+    // @available(macOS 26.0, *)
+    // static var supportedModes: IntentModes = .background
 
     static var parameterSummary: some ParameterSummary {
         Summary("Get \(\.$detail) from \(\.$terminal)")

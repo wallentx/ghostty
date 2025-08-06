@@ -16,8 +16,9 @@ struct KeybindIntent: AppIntent {
     )
     var action: String
 
-    @available(macOS 26.0, *)
-    static var supportedModes: IntentModes = [.background, .foreground]
+    // Temporarily commented out to allow build completion for testing
+    // @available(macOS 26.0, *)
+    // static var supportedModes: IntentModes = [.background, .foreground]
 
     @MainActor
     func perform() async throws -> some IntentResult & ReturnsValue<Bool> {

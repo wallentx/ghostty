@@ -24,8 +24,8 @@ struct InputTextIntent: AppIntent {
     )
     var terminal: TerminalEntity
 
-    @available(macOS 26.0, *)
-    static var supportedModes: IntentModes = [.background, .foreground]
+    // @available(macOS 26.0, *)
+    // static var supportedModes: IntentModes = [.background, .foreground]
 
     @MainActor
     func perform() async throws -> some IntentResult {
@@ -74,8 +74,8 @@ struct KeyEventIntent: AppIntent {
     )
     var terminal: TerminalEntity
 
-    @available(macOS 26.0, *)
-    static var supportedModes: IntentModes = [.background, .foreground]
+    // @available(macOS 26.0, *)
+    // static var supportedModes: IntentModes = [.background, .foreground]
 
     @MainActor
     func perform() async throws -> some IntentResult {
@@ -136,8 +136,8 @@ struct MouseButtonIntent: AppIntent {
     )
     var terminal: TerminalEntity
 
-    @available(macOS 26.0, *)
-    static var supportedModes: IntentModes = [.background, .foreground]
+    // @available(macOS 26.0, *)
+    // static var supportedModes: IntentModes = [.background, .foreground]
 
     @MainActor
     func perform() async throws -> some IntentResult {
@@ -197,8 +197,8 @@ struct MousePosIntent: AppIntent {
     )
     var terminal: TerminalEntity
 
-    @available(macOS 26.0, *)
-    static var supportedModes: IntentModes = [.background, .foreground]
+    // @available(macOS 26.0, *)
+    // static var supportedModes: IntentModes = [.background, .foreground]
 
     @MainActor
     func perform() async throws -> some IntentResult {
@@ -265,8 +265,8 @@ struct MouseScrollIntent: AppIntent {
     )
     var terminal: TerminalEntity
 
-    @available(macOS 26.0, *)
-    static var supportedModes: IntentModes = [.background, .foreground]
+    // @available(macOS 26.0, *)
+    // static var supportedModes: IntentModes = [.background, .foreground]
 
     @MainActor
     func perform() async throws -> some IntentResult {

@@ -1527,6 +1527,11 @@ pub const Text = struct {
     text: [:0]const u8,
     offset_start: u32,
     offset_len: u32,
+    /// If non-null, this describes the pixel coordinates of the top-left corner
+    /// of the viewport from which this text was read. This is typically used for
+    /// rendering or selection purposes. If null, the viewport is not applicable
+    /// (for example, when the text is not associated with a specific region of the
+    /// terminal surface). The offset fields are now separate and do not affect this.
     viewport: ?Viewport,
 
     pub const Viewport = struct {

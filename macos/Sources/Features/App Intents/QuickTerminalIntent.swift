@@ -5,9 +5,8 @@ struct QuickTerminalIntent: AppIntent {
     static var title: LocalizedStringResource = "Open the Quick Terminal"
     static var description = IntentDescription("Open the Quick Terminal. If it is already open, then do nothing.")
 
-    // Temporarily commented out to allow build completion for testing
-    // @available(macOS 26.0, *)
-    // static var supportedModes: IntentModes = .background
+    @available(macOS 26.0, *)
+    static var supportedModes: IntentModes = .background
 
     @MainActor
     func perform() async throws -> some IntentResult & ReturnsValue<[TerminalEntity]> {

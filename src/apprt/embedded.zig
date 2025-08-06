@@ -1568,7 +1568,6 @@ pub const CAPI = struct {
             global.alloc,
             core_sel,
         ) catch |err| {
-            log.warn("error reading text err={}", .{err});
             return false;
         };
 
